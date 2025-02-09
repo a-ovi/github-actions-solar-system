@@ -49,7 +49,7 @@ jobs:
       - name: checking out repo
         uses: actions/checkout@v4
       - name: setup nodejs 18
-        uses: actions/setup-node
+        uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: install deps
