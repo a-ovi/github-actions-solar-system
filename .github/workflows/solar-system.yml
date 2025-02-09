@@ -42,6 +42,30 @@ jobs:
           with:
             name: Mocha-Test-Result
             path: test-results.xml
+
+    code-coverage:
+      runs-on: ubuntu-latest
+      steps:
+      - name: checking out repo
+        uses: actions/checkout@v4
+      - name: setup nodejs 18
+        uses: actions/setup-node
+        with:
+          node-version: 18
+      - name: install deps
+        run: npm install
+      - name: run the code coverage
+        continue-on-error: true
+        run: npm run coverage
+      - name: upload the coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: Code-Coverage-Result
+          path: coverage
+          retention-days: 5
+
+
+
     docker:
       name: Docker
       needs: [unit-testing]
