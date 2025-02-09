@@ -37,3 +37,24 @@ jobs:
           with:
             name: Mocha-Test-Result
             path: test-results.xml
+    docker:
+      name: Docker
+      needs: [unit-testing]
+      runs-on: ubuntu-latest
+      steps:
+      - name: set lower case repo own
+        uses: actions/checkout@v4
+        run: echo "REPO_OWNER_LC=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+      - name: login in docker
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: '${{ github.repository_owner }}'
+          password: '${{ secrets.GITHUB_TOKEN }}'
+      - name: pushing the image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: 'ghcr.io/${{ env.REPO_OWNER_LC }}/solar-system:${{ github.sha }}' 
+
