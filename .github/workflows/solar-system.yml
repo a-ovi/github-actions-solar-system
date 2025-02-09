@@ -92,20 +92,17 @@ jobs:
           tags: 'ghcr.io/${{ env.REPO_OWNER_LC }}/solar-system:${{ github.sha }}' 
 
     dev-deploy:
+      needs: docker
       runs-on: ubuntu-latest
-      needs: [docker]
-      environment: 
+      environment:
         name: development
       steps:
         - uses: actions/checkout@v4
-
         - uses: azure/setup-kubectl@v3
           with:
             version: v1.26.0
-
         - uses: azure/k8s-set-context@v3
           with:
             method: kubeconfig
-            kubeconfig: ${{ secrets.KUBECONFIG }}
-        
-        - run: kubectl version -o yaml
+            kubeconfig: '${{ secrets.KUBECONFIG }}'
+        - run: kubectl version --short -o yaml
