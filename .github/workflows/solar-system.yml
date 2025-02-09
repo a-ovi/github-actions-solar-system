@@ -42,8 +42,9 @@ jobs:
       needs: [unit-testing]
       runs-on: ubuntu-latest
       steps:
-      - name: set lower case repo own
+      - name: checking out the repo
         uses: actions/checkout@v4
+      - name: set lower case repo own
         run: echo "REPO_OWNER_LC=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
       - name: login in docker
         uses: docker/login-action@v3
